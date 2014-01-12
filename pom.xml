@@ -42,8 +42,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <upstreamVersion>0.1.0</upstreamVersion>
-        <sourceUrl>https://raw.github.com/jrburke/amdefine</sourceUrl>
+        <sourceUrl>https://github.com/jrburke/amdefine/archive</sourceUrl>
         <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${upstreamVersion}</destDir>
+        <extractDir>${project.build.directory}/amdefine-${upstreamVersion}</extractDir>
     </properties>
     
     <build>
@@ -59,8 +60,32 @@
                         <goals><goal>download-single</goal></goals>
                         <configuration>
                             <url>${sourceUrl}</url>
-                            <fromFile>${upstreamVersion}/amdefine.js</fromFile>
-                            <toFile>${destDir}/lib/amdefine.js</toFile>
+                            <fromFile>${upstreamVersion}.zip</fromFile>
+                            <toFile>${project.build.directory}/amdefine.zip</toFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <target>
+                                <echo message="unzip archive" />
+                                <unzip src="${project.build.directory}/amdefine.zip" dest="${project.build.directory}" />
+                                <echo message="moving resources" />
+                                <move todir="${destDir}/node_modules">
+                                    <fileset dir="${extractDir}">
+                                        <include name="*.js"/>
+                                        <include name="*.json"/>
+                                    </fileset>
+                                </move>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>
