@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <groupId>org.webjars</groupId>
     <artifactId>amdefine</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.0-1-SNAPSHOT</version>
     <name>amdefine</name>
     <description>WebJar for amdefine</description>
     <url>http://webjars.org</url>
@@ -42,8 +42,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <upstreamVersion>0.1.0</upstreamVersion>
-        <sourceUrl>https://raw.github.com/jrburke/amdefine</sourceUrl>
+        <sourceUrl>https://github.com/jrburke/amdefine</sourceUrl>
         <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${upstreamVersion}</destDir>
+        <extractDir>${project.build.directory}/amdefine-${upstreamVersion}</extractDir>
     </properties>
     
     <build>
@@ -58,10 +59,31 @@
                         <phase>process-resources</phase>
                         <goals><goal>download-single</goal></goals>
                         <configuration>
-                            <url>${sourceUrl}</url>
-                            <fromFile>${upstreamVersion}/amdefine.js</fromFile>
-                            <toFile>${destDir}/lib/amdefine.js</toFile>
+                            <url>${sourceUrl}/archive</url>
+                            <fromFile>${upstreamVersion}.zip</fromFile>
+                            <toFile>${project.build.directory}/amdefine.zip</toFile>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                      <phase>process-resources</phase>
+                      <goals><goal>run</goal></goals>
+                      <configuration>
+                          <target>
+                              <echo message="unzip archive" />
+                              <unzip src="${project.build.directory}/amdefine.zip" dest="${project.build.directory}" />
+                              <echo message="moving resources" />
+                              <move file="${extractDir}/amdefine.js" todir="${destDir}" />
+                              <move file="${extractDir}/intercept.js" todir="${destDir}" />
+                              <move file="${extractDir}/package.json" todir="${destDir}" />
+                          </target>
+                      </configuration>
                     </execution>
                 </executions>
             </plugin>
