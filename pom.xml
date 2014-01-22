@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <groupId>org.webjars</groupId>
     <artifactId>amdefine</artifactId>
-    <version>0.1.0-1-SNAPSHOT</version>
+    <version>0.1.0-1</version>
     <name>amdefine</name>
     <description>WebJar for amdefine</description>
     <url>http://webjars.org</url>
@@ -28,7 +28,7 @@
         <url>http://github.com/webjars/amdefine</url>
         <connection>scm:git:https://github.com/webjars/amdefine.git</connection>
         <developerConnection>scm:git:https://github.com/webjars/amdefine.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>amdefine-0.1.0-1</tag>
     </scm>
 
     <developers>
